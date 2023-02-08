@@ -30,7 +30,7 @@ class UserRepository implements IUserRepository {
         return specificUser;
     }
 
-    async update({id,name,username,email,password}: User): Promise<User> {
+    async update({id,name,username,email,password}: any): Promise<User> {
         const updateUser = await prisma.user.update({
             where:{
                 id:Number(id),
