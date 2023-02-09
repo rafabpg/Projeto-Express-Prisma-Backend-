@@ -1,5 +1,6 @@
+import { PostDTOS } from '../dtos/PostDTOS';
 import { UserDTOS } from '../dtos/UserDTOS';
-import { User } from '@prisma/client';
+import { Post, User } from '@prisma/client';
 
 interface IUserRepository{
     create(createUser:UserDTOS):Promise<void>;
@@ -9,5 +10,11 @@ interface IUserRepository{
     delete(id:string):Promise<void>;
     findByUsername(username:string):Promise<User | null>;
     findByEmail(email:string):Promise<Boolean>;
+    createPost(id:string,post:PostDTOS):Promise<void>
+    getPosts(id:string):Promise<any>;
+    findPostByID(id:string):Promise<any>;
+    publishPost(id:string):Promise<void>;
+    deletePost(id:string):Promise<void>;
+    updatePost(id:string,post:PostDTOS):Promise<Post>
 }
 export { IUserRepository };

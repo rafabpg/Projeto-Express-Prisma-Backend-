@@ -30,6 +30,29 @@ usersRoutes.delete('/:id', (request, response) => {
     return userController.delete(request, response);
 })
 
+//POSTS
+
+
+usersRoutes.post('/posts', (request, response) => {
+    return userController.createPost(request, response);
+})
+
+usersRoutes.get('/:id/posts', (request, response) => {
+    return userController.getPosts(request, response);
+}) 
+
+usersRoutes.delete('/posts/:id', (request, response) => {
+    return userController.deletePost(request, response);
+})
+
+usersRoutes.patch('/posts/:id/published', (request, response) => {
+    return userController.publishPost(request, response);
+})
+
+usersRoutes.put('/posts/:id', (request, response) => {
+    return userController.updatePost(request, response);
+})
+
 
 
 

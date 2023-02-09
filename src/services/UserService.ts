@@ -70,6 +70,51 @@ class UserService{
         if(userSpecificService == null) throw Error('Usuario não encontrado');
         this.userRepository.delete(id);
     }
+    async createPost(id:string,title:string,description:string){
+        if(id && title && description){
+            this.userRepository.createPost(id,{title,description});
+        }else{
+            throw Error('Campos não preenchidos');
+        }
+    }
+
+    async getPosts(id:string){
+        if(id){
+            const allUserPosts =  await this.userRepository.getPosts(id);
+            return allUserPosts;
+        }else{
+            throw Error('Campos não preenchidos');
+        }
+    }
+
+    async deletePost(id:string){
+        const checkPost = await this.userRepository.findPostByID(id);
+        if(checkPost == null){
+            throw Error('Post não encontrado');
+        }else{
+            this.userRepository.deletePost(id);
+        }
+    }
+
+    async publishPost(id:string){
+        const checkPost = await this.userRepository.findPostByID(id);
+        if(checkPost == null){
+            throw Error('Post não encontrado');
+        }else{
+            this.userRepository.publishPost(id);
+        }
+    }
+    
+    async updatePost(id:string,title:string,description:string){
+        const checkPost = await this.userRepository.findPostByID(id);
+        if(checkPost == null){
+            throw Error('Post não encontrado');
+        }else{
+           const updatedPost =  this.userRepository.updatePost(id,{title,description});
+           return updatedPost;
+        }
+        
+    }
 
 }
 export { UserService }

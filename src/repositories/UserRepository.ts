@@ -1,7 +1,8 @@
-import { User } from "@prisma/client";
+import { Post, User } from "@prisma/client";
 import { UserDTOS } from "../dtos/UserDTOS";
 import { IUserRepository } from "./IUserRepository";
 import { prisma } from '../database';
+import { PostDTOS } from "../dtos/PostDTOS";
 
 
 
@@ -71,7 +72,74 @@ class UserRepository implements IUserRepository {
         if(checkEmail == null) return false;
         return true;
     }
-    
+    async createPost(id:string,post:PostDTOS):Promise<void>{
+        await prisma.user.update({
+            where:{
+                id:Number(id)
+            },
+            data:{
+                posts:{
+                    create:{
+                        title:post.title,
+                        description:post.description
+                    }
+                }
+            }
+        })
+    } 
+    async getPosts(id:string):Promise<any>{
+        const allPosts = await prisma.user.findMany({
+            where:{
+                id:Number(id)
+            },
+            select:{
+                posts:true
+            }
+        })
+        return allPosts;
+    } 
+    async deletePost(id:string):Promise<void>{
+        await prisma.post.delete({
+            where:{
+                id:Number(id)
+            }
+        })
+    } 
+
+    async publishPost(id:string):Promise<void>{
+        await prisma.post.update({
+            where:{
+                id:Number(id),
+            },
+            data:{
+                published:true
+            }
+        });
+    } 
+
+    async findPostByID(id:string):Promise<any>{
+        let checkPost = await prisma.post.findFirst({
+            where:{
+                id:Number(id),
+            }
+        });
+        return checkPost;
+    } 
+
+    async updatePost(id:string,post:PostDTOS):Promise<Post>{
+        const updatedPost  = await prisma.post.update({
+            where:{
+                id:Number(id)
+            },
+            data:{
+                title:post.title,
+                description:post.description
+            }
+        })
+        return updatedPost;
+    } 
+    //pegar todos os posts  
+
 }
 
 export { UserRepository };
