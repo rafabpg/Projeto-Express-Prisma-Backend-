@@ -6,6 +6,7 @@ class UserController{
 
     async create(request:Request,response:Response){
         const {email,name,username,password} = request.body;
+        // const hashPassword = 
         try {
             await this.userService.create({email,name,username,password});
             return response.status(201).send({message:'Usuário criado com sucesso'});
@@ -15,6 +16,7 @@ class UserController{
     }
 
     async get(request:Request,response:Response){
+        // const { role } = request.user
         try {
             const allUsers =  await this.userService.get();
             return response.status(200).json(allUsers);

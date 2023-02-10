@@ -1,11 +1,11 @@
 import { UserRepository } from '../repositories/UserRepository';
-
+import bcrypt from 'bcrypt';
 
 interface CreateUserRequest{
     name:string,
     email:string,
     username:string,
-    password:string
+    userPassword:string
 }
 
 interface UpdateUserRequest{
@@ -19,8 +19,10 @@ interface UpdateUserRequest{
 class UserService{
     constructor( private userRepository: UserRepository){}
 
-    async create({name,email,username,password}:CreateUserRequest){
+    async create({name,email,username,userPassword}:CreateUserRequest){
         let checkUsername = await this.userRepository.findByUsername(username);
+        // const salt = await bcrypt.genSalt();
+        const password = await bcrypt.hash(userPassword,10)
         if(checkUsername){
             throw Error('Username ja em uso');
         } 

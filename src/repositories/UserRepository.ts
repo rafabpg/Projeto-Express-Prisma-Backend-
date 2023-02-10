@@ -138,6 +138,17 @@ class UserRepository implements IUserRepository {
         })
         return updatedPost;
     } 
+    // async authenticationUser(username:string,password:string):Promise<User | null>{
+    //     const userAuthenticated = await prisma.user.findFirst({
+    //         where:{
+    //             username:username,
+    //             AND:{
+    //                 password:password
+    //             }
+    //         }
+    //     });
+    //     return userAuthenticated;
+    // }
     //pegar todos os posts  
 
 }
