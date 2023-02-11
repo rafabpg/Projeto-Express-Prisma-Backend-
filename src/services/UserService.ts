@@ -38,7 +38,9 @@ class UserService{
         }
     }
 
-    async get(){
+    async get(userID:string){
+        const checkrole = await this.findByID(userID)
+        if (checkrole.role !== 'ADMIN') throw Error('Apenas admins podem acessar isso'); 
         const allUser = await this.userRepository.listUser();
         return allUser;
     }

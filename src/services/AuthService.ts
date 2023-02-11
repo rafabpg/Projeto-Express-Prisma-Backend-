@@ -11,10 +11,14 @@ class AuthService{
         if(user == null) throw Error('Usuario incorreto');
         const passwordValid = bcrypt.compareSync(password, user.password);
         if(!passwordValid) throw Error('Senha incorreta');
-        const acessToken  = jwt.sign({username:user.username,role:user.role},authConfig.accessTokenSecret)
+        const acessToken  = jwt.sign({username:user.username,role:user.role},authConfig.accessTokenSecret,{
+            subject:String(user.id),
+            expiresIn:"7d"
+        })
+        const refreshToken = jwt.sign({ username: user.username, role: user.role }, authConfig.refreshTokenSecret);
         const expiredAt = new Date();
         expiredAt.setDate(expiredAt.getDate() + 7);
-        await this.userRepository.createToken(user,acessToken,expiredAt);
+        await this.userRepository.createToken(user,refreshToken,expiredAt);
         // const {id} = user;
         return acessToken;
     }

@@ -6,7 +6,6 @@ class UserController{
 
     async create(request:Request,response:Response){
         const {email,name,username,password} = request.body;
-        // const { role } = request.userId;
         // if(role !== 'ADMIN') return response.status(403).send({message:'Sem autorização para postar um post'});
         const hashPassword = password;
         try {
@@ -19,8 +18,10 @@ class UserController{
 
     async get(request:Request,response:Response){
         // const { role } = request.user
+        
+        const { userId } = request;
         try {
-            const allUsers =  await this.userService.get();
+            const allUsers =  await this.userService.get(userId);
             return response.status(200).json(allUsers);
         } catch (error:any) {
             return response.status(400).json({error: error.message});
