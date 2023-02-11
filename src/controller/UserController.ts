@@ -6,9 +6,11 @@ class UserController{
 
     async create(request:Request,response:Response){
         const {email,name,username,password} = request.body;
-        // const hashPassword = 
+        // const { role } = request.userId;
+        // if(role !== 'ADMIN') return response.status(403).send({message:'Sem autorização para postar um post'});
+        const hashPassword = password;
         try {
-            await this.userService.create({email,name,username,password});
+            await this.userService.create({email,name,username,hashPassword});
             return response.status(201).send({message:'Usuário criado com sucesso'});
         } catch (error:any) {
             return response.status(400).json({error: error.message});

@@ -19,4 +19,12 @@ authRoutes.post('/login',(request,response)=>{
     return authController.login(request,response)
 })
 
+authRoutes.post('/token',(request,response)=>{
+    return authController.login(request,response)
+})
+
+authRoutes.post('/logout',(request,response)=>{
+    return authController.login(request,response)
+})
+
 export {authRoutes}

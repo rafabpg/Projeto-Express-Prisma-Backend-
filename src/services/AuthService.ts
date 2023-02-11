@@ -12,8 +12,32 @@ class AuthService{
         const passwordValid = bcrypt.compareSync(password, user.password);
         if(!passwordValid) throw Error('Senha incorreta');
         const acessToken  = jwt.sign({username:user.username,role:user.role},authConfig.accessTokenSecret)
+        const expiredAt = new Date();
+        expiredAt.setDate(expiredAt.getDate() + 7);
+        await this.userRepository.createToken(user,acessToken,expiredAt);
+        // const {id} = user;
         return acessToken;
     }
+
+    // async refresh(username:string,password:string){
+    //     const user = await this.userRepository.findByUsername(username);;
+    //     if(user == null) throw Error('Usuario incorreto');
+    //     const passwordValid = bcrypt.compareSync(password, user.password);
+    //     if(!passwordValid) throw Error('Senha incorreta');
+    //     const acessToken  = jwt.sign({username:user.username,role:user.role},authConfig.accessTokenSecret)
+    //     // const {id} = user;
+    //     return acessToken;
+    // }
+
+    // async logout(username:string,password:string){
+    //     const user = await this.userRepository.findByUsername(username);;
+    //     if(user == null) throw Error('Usuario incorreto');
+    //     const passwordValid = bcrypt.compareSync(password, user.password);
+    //     if(!passwordValid) throw Error('Senha incorreta');
+    //     const acessToken  = jwt.sign({username:user.username,role:user.role},authConfig.accessTokenSecret)
+    //     // const {id} = user;
+    //     return acessToken;
+    // }
 
 }
 

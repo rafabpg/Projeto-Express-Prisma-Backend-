@@ -1,4 +1,4 @@
-import { Post, User } from "@prisma/client";
+import { Post, User  } from "@prisma/client";
 import { UserDTOS } from "../dtos/UserDTOS";
 import { IUserRepository } from "./IUserRepository";
 import { prisma } from '../database';
@@ -138,17 +138,21 @@ class UserRepository implements IUserRepository {
         })
         return updatedPost;
     } 
-    // async authenticationUser(username:string,password:string):Promise<User | null>{
-    //     const userAuthenticated = await prisma.user.findFirst({
-    //         where:{
-    //             username:username,
-    //             AND:{
-    //                 password:password
-    //             }
-    //         }
-    //     });
-    //     return userAuthenticated;
-    // }
+    async createToken(user:User,acessToken:string,expiredAt:Date):Promise<void>{
+        await prisma.token.create({
+            data:{
+                userId:user.id,
+                acessToken:acessToken,expiredAt
+            }
+        })
+        // ({
+        //     data:{
+        //         
+        //         
+        //     }
+        // });
+        
+    }
     //pegar todos os posts  
 
 }
