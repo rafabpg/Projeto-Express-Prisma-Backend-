@@ -138,13 +138,14 @@ class UserRepository implements IUserRepository {
         })
         return updatedPost;
     } 
-    async createToken(user:User,acessToken:string,expiredAt:Date):Promise<void>{
-        await prisma.token.create({
-            data:{
-                userId:user.id,
-                acessToken:acessToken,expiredAt
-            }
-        })
+    // async createToken(user:User,acessToken:string,expiredAt:Date):Promise<void>{
+    //     await prisma.token.create({
+    //         data:{
+    //             userId:user.id,
+    //             acessToken:acessToken,
+    //             expiredAt:expiredAt
+    //         }
+    //     })
         // ({
         //     data:{
         //         
@@ -152,7 +153,7 @@ class UserRepository implements IUserRepository {
         //     }
         // });
         
-    }
+    // }
     //pegar todos os posts  
 
 }

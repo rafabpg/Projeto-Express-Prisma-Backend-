@@ -16,6 +16,6 @@ interface IUserRepository{
     publishPost(id:string):Promise<void>;
     deletePost(id:string):Promise<void>;
     updatePost(id:string,post:PostDTOS):Promise<Post>;
-    createToken(user:User,acessToken:string,expiredAt:Date):Promise<void>;
+    // createToken(user:User,acessToken:string,expiredAt:Date):Promise<void>;
 }
 export { IUserRepository };

@@ -1,3 +1,4 @@
+import { BadRequestError, NotFoundError, UnauthorizedError } from '../helpers/api_errors';
 import { UserRepository } from '../repositories/UserRepository';
 import bcrypt from 'bcrypt';
 
@@ -27,27 +28,27 @@ class UserService{
         // const salt = await bcrypt.genSalt();
         const password = await bcrypt.hash(hashPassword,10)
         if(checkUsername){
-            throw Error('Username ja em uso');
+            throw new BadRequestError('Username ja em uso');
         } 
         else{
             let checkEmail = await this.userRepository.findByEmail(email);
             if(checkEmail){
-                throw Error('Email ja em uso');
+                throw new BadRequestError('Email ja em uso');
             } 
             this.userRepository.create({name,email,username,password})
         }
     }
-
-    async get(userID:string){
-        const checkrole = await this.findByID(userID)
-        if (checkrole.role !== 'ADMIN') throw Error('Apenas admins podem acessar isso'); 
+    //userID:string
+    async get(){
+        // const checkrole = await this.findByID(userID)
+        // if (checkrole.role !== 'ADMIN') throw new UnauthorizedError('Apenas admins podem acessar isso'); 
         const allUser = await this.userRepository.listUser();
         return allUser;
     }
 
     async findByID(id:string){
         const userSpecificService = await this.userRepository.findByID(id);
-        if(userSpecificService == null) throw Error('Usuario não encontrado');
+        if(userSpecificService == null) throw new NotFoundError('Usuario não encontrado');
         //checar se foi falso
         return userSpecificService;
     }
@@ -58,13 +59,13 @@ class UserService{
             if(email){
                 let checkEmail = await this.userRepository.findByEmail(email);
                 if(checkEmail){
-                    throw Error('Esse email ja esta em uso');
+                    throw new BadRequestError('Esse email ja esta em uso');
                 }
             }
             if(username){
                 let checkUsername = await this.userRepository.findByUsername(username);
                 if(checkUsername){
-                    throw Error('Username ja em uso');
+                    throw new BadRequestError('Username ja em uso');
                 }
             }
             const updateUser = await this.userRepository.update({id,name,username,email,password});
@@ -81,7 +82,7 @@ class UserService{
         if(id && title && description){
             this.userRepository.createPost(id,{title,description});
         }else{
-            throw Error('Campos não preenchidos');
+            throw new BadRequestError('Campos não preenchidos');
         }
     }
 
@@ -90,14 +91,14 @@ class UserService{
             const allUserPosts =  await this.userRepository.getPosts(id);
             return allUserPosts;
         }else{
-            throw Error('Campos não preenchidos');
+            throw new BadRequestError('Campos não preenchidos');
         }
     }
 
     async deletePost(id:string){
         const checkPost = await this.userRepository.findPostByID(id);
         if(checkPost == null){
-            throw Error('Post não encontrado');
+            throw new NotFoundError('Post não encontrado');
         }else{
             this.userRepository.deletePost(id);
         }
@@ -106,7 +107,7 @@ class UserService{
     async publishPost(id:string){
         const checkPost = await this.userRepository.findPostByID(id);
         if(checkPost == null){
-            throw Error('Post não encontrado');
+            throw new NotFoundError('Post não encontrado');
         }else{
             this.userRepository.publishPost(id);
         }
@@ -115,7 +116,7 @@ class UserService{
     async updatePost(id:string,title:string,description:string){
         const checkPost = await this.userRepository.findPostByID(id);
         if(checkPost == null){
-            throw Error('Post não encontrado');
+            throw new NotFoundError('Post não encontrado');
         }else{
            const updatedPost =  this.userRepository.updatePost(id,{title,description});
            return updatedPost;

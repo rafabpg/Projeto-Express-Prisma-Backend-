@@ -4,7 +4,7 @@ import { authConfig } from '../config/auth';
 
 
 interface TokenPayload {
-    sub:string
+    sub:string | any
 }
 
 
@@ -24,7 +24,7 @@ class AuthAuthentication{
                 // if (err) return response.sendStatus(403);
                 // request.user = user;
                 // });   
-            request.userId = sub;
+            // request.userId = sub;
             // request.userId = sub;
             next();
         }else{
